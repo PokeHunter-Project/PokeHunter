@@ -12,6 +12,13 @@ APartner::APartner()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Animation
+	static ConstructorHelpers::FClassFinder<UAnimInstance> ANIM_PARTNER(TEXT("/Game/Partner/Blueprint/BP_PartnerAnim"));
+	if (ANIM_PARTNER.Succeeded())
+	{
+		GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+		GetMesh()->SetAnimInstanceClass(ANIM_PARTNER.Class);
+	}
 }
 
 // Called when the game starts or when spawned

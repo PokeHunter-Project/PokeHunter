@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../PokeHunter.h"
+#include "PokeHunter/PokeHunter.h"
 #include "Animation/AnimInstance.h"
 #include "HunterAnimInstance.generated.h"
 
