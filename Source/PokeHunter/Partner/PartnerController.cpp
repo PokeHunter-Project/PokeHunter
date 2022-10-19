@@ -6,6 +6,7 @@
 #include "BehaviorTree/BlackboardData.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "PokeHunter/Hunter/Hunter.h"
+#include "PokeHunter/DefaultGameInstance.h"
 
 APartnerController::APartnerController()
 {
@@ -33,8 +34,18 @@ void APartnerController::OnPossess(APawn* pawn)
 
 void APartnerController::RunAI()
 {
-	if (UseBlackboard(BBPartner, Blackboard)) RunBehaviorTree(BTPartner);
+	if (UseBlackboard(BBPartner, Blackboard)) {
+		RunBehaviorTree(BTPartner);
+		// gameInstance->My_Partner = Cast<APartner>()
+		// gameInstance->SetMyPartner(Hunter->Partner);
+		// gameInstance->SetMyPartner(GetParentActor());
+		UE_LOG(LogTemp, Log, TEXT("Set My Partner"));
+	}
 
+	/*if (gameInstance->My_Partner == NULL) {
+		gameInstance->SetMyPartner(GetParentActor());
+		UE_LOG(LogTemp, Log, TEXT("Set My Partner"));
+	}*/
 }
 
 void APartnerController::StopAI()

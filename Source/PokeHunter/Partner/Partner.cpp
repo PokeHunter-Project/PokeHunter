@@ -25,6 +25,7 @@ APartner::APartner()
 void APartner::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 // Called every frame

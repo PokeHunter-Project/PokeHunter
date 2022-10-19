@@ -2,13 +2,10 @@
 
 #pragma once
 
-// #include "PokeHunter/IOnlineSession.h"
-// #include "Interfaces/OnlineSessionInterface.h"
-
+#include "Partner/Partner.h"
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "DefaultGameInstance.generated.h"
-// #include "../../../../UnrealEngine-4.27-plus/Engine/Plugins/Online/OnlineSubsystem/Source/Public/Interfaces/OnlineSessionInterface.h"
 
 /**
  * 
@@ -21,6 +18,11 @@ class POKEHUNTER_API UDefaultGameInstance : public UGameInstance
 public:
 	UDefaultGameInstance();
 
-	//FOnCreateSessionCompleteDelegate CreateSessionCompleteD;
-	//FDelegateHandle CreateSessionCompleteDH;
+	virtual void Init() override;
+	void SetMyPartner(APartner*);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Partner")
+	APartner* My_Partner;
+
+	
 };

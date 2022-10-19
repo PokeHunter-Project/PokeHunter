@@ -3,8 +3,17 @@
 
 #include "DefaultGameInstance.h"
 
+void UDefaultGameInstance::Init()
+{
+	Super::Init();
+	// UE_LOG(LogClass, Warning, TEXT("%s"), TEXT("Game Instance Init!"));
+}
+
 UDefaultGameInstance::UDefaultGameInstance()
 {
-	// IOnlineSession::CreateSession(1, "TestSesion", );
-	
+	UE_LOG(LogTemp, Log, TEXT("GameInstance Maker"));
+}
+
+void UDefaultGameInstance::SetMyPartner(APartner* partner) {
+	My_Partner = partner;
 }

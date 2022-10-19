@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PokeHunter/DefaultGameInstance.h"
 #include "PokeHunter/Base/InteractActor.h"
 #include "PokeHunter/Hunter/Hunter.h"
 #include "Blueprint/UserWidget.h"
 #include "Npc.generated.h"
-
 
 UCLASS()
 class POKEHUNTER_API ANpc : public AInteractActor

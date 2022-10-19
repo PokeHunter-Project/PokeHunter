@@ -106,12 +106,12 @@ void AHunter::Tick(float DeltaTime)
 void AHunter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	ABLOG_S(Warning);
+	
 }
 
 void AHunter::PossessedBy(AController* NewController)
 {
-	ABLOG_S(Warning);
+	
 	Super::PossessedBy(NewController);
 }
 
@@ -209,7 +209,6 @@ void AHunter::OpenInventory()
 		}
 	}
 }
-
 
 void AHunter::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
