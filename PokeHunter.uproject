@@ -11,13 +11,18 @@
 			"AdditionalDependencies": [
 				"Engine",
 				"AIModule",
-				"CoreUObject"
+				"CoreUObject",
+				"UMG"
 			]
 		}
 	],
 	"Plugins": [
 		{
 			"Name": "GameLiftServerSDK",
+			"Enabled": true
+		},
+		{
+			"Name": "WebBrowserWidget",
 			"Enabled": true
 		}
 	]
