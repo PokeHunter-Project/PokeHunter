@@ -1,17 +1,7 @@
 #include "Base/PokeHunterGameInstance.h"
-
-#include "HttpManager.h"
 #include "Json.h"
 #include "JsonUtilities.h"
 #include "Base/TextReaderComponent.h"
-#include "Components/TextRenderComponent.h"
-#include "PokeHunter/PokeHunter.h"
-
-#include "WebBrowser.h"
-#include "WebBrowserModule.h"
-#include "IWebBrowserSingleton.h"
-#include "IWebBrowserCookieManager.h"
-#include "Kismet/GameplayStatics.h"
 
 UPokeHunterGameInstance::UPokeHunterGameInstance()
 {
@@ -28,7 +18,7 @@ void UPokeHunterGameInstance::Shutdown()
 
 	if(AccessToken.Len() > 0)
 	{
-		TSharedRef<IHttpRequest> InvalidateTokensRequest = HttpModule->CreateRequest();
+		TSharedRef<IHttpRequest, ESPMode::ThreadSafe> InvalidateTokensRequest = HttpModule->CreateRequest();
 		InvalidateTokensRequest->SetURL(ApiUrl + "/invalidatetokens");
 		InvalidateTokensRequest->SetVerb("GET");
 		InvalidateTokensRequest->SetHeader("Content-Type", "application/json");
@@ -43,24 +33,25 @@ void UPokeHunterGameInstance::SetCognitoTokens(FString NewAccessToken, FString N
 	IdToken = NewIdToken;
 	RefreshToken = NewRefreshToken;
 
-	UE_LOG(LogTemp, Warning, TEXT("access token: %s"), *AccessToken);
+	// UE_LOG(LogTemp, Warning, TEXT("access token: %s"), *AccessToken);
+	// UE_LOG(LogTemp, Warning, TEXT("refresh token: %s"), *RefreshToken);
 
-	GetWorld()->GetTimerManager().SetTimer(RetrieveNewTokensHandle, this, &UPokeHunterGameInstance::RetrieveNewTokens, 1.0f, false, 60.0f);
+	GetWorld()->GetTimerManager().SetTimer(RetrieveNewTokensHandle, this, &UPokeHunterGameInstance::RetrieveNewTokens, 1.0f, false, 3300.0f);
 }
 
 void UPokeHunterGameInstance::RetrieveNewTokens()
 {
 	if(AccessToken.Len() > 0 && RefreshToken.Len() > 0)
 	{
-		TSharedRef<FJsonObject> RequestObj = MakeShareable(new FJsonObject);
+		TSharedPtr<FJsonObject> RequestObj = MakeShareable(new FJsonObject);
 		RequestObj->SetStringField("refreshToken", RefreshToken);
 
 		FString RequestBody;
 		TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&RequestBody);
 
-		if(FJsonSerializer::Serialize(RequestObj.ToSharedRef(), Writer))
+		if (FJsonSerializer::Serialize(RequestObj.ToSharedRef(), Writer)) 
 		{
-			TSharedRef<IHttpRequest> RetrieveNewTokensRequest = HttpModule->CreateRequest();
+			TSharedRef<IHttpRequest, ESPMode::ThreadSafe> RetrieveNewTokensRequest = HttpModule->CreateRequest();
 			RetrieveNewTokensRequest->OnProcessRequestComplete().BindUObject(this, &UPokeHunterGameInstance::OnRetrieveNewTokensResponseReceived);
 			RetrieveNewTokensRequest->SetURL(ApiUrl + "/retrievenewtokens");
 			RetrieveNewTokensRequest->SetVerb("POST");
@@ -69,8 +60,7 @@ void UPokeHunterGameInstance::RetrieveNewTokens()
 			RetrieveNewTokensRequest->SetContentAsString(RequestBody);
 			RetrieveNewTokensRequest->ProcessRequest();
 		}
-		else
-		{
+		else {
 			GetWorld()->GetTimerManager().SetTimer(RetrieveNewTokensHandle, this, &UPokeHunterGameInstance::RetrieveNewTokens, 1.0f, false, 30.0f);
 		}
 	}
@@ -81,8 +71,8 @@ void UPokeHunterGameInstance::OnRetrieveNewTokensResponseReceived(FHttpRequestPt
 	if(bWasSuccessful)
 	{
 		TSharedPtr<FJsonObject> JsonObject;
-		TSharedPtr<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Response->GetContentAsString());
-		if(FJsonSerializer::Deserialize(Reader, JsonObject))
+		TSharedRef<TJsonReader<TCHAR>> Reader = TJsonReaderFactory<>::Create(Response->GetContentAsString());
+		if (FJsonSerializer::Deserialize(Reader, JsonObject))
 		{
 			if(!JsonObject->HasField("error"))
 			{

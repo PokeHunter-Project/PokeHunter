@@ -76,7 +76,7 @@ void UTitleWidget::HandleLoginUrlChange()
 
 					if(FJsonSerializer::Serialize(RequestObj.ToSharedRef(), Writer))
 					{
-						TSharedRef<IHttpRequest> ExchangeCodeForTokensRequest = HttpModule->CreateRequest();
+						TSharedRef<IHttpRequest, ESPMode::ThreadSafe> ExchangeCodeForTokensRequest = HttpModule->CreateRequest();
 						ExchangeCodeForTokensRequest->OnProcessRequestComplete().BindUObject(this, &UTitleWidget::OnExchangeCodeForTokensResponseReceived);
 						ExchangeCodeForTokensRequest->SetURL(ApiUrl + "/exchangecodefortokens");
 						ExchangeCodeForTokensRequest->SetVerb("POST");
