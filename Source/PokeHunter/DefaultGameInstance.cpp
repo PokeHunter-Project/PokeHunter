@@ -4,6 +4,12 @@
 #include "DefaultGameInstance.h"
 #include "Item/ItemDatabase.h"
 
+void UDefaultGameInstance::Init()
+{
+	Super::Init();
+	// UE_LOG(LogClass, Warning, TEXT("%s"), TEXT("Game Instance Init!"));
+}
+
 UDefaultGameInstance::UDefaultGameInstance()
 {
 	// IOnlineSession::CreateSession(1, "TestSesion", );

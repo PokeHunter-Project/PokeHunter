@@ -8,7 +8,7 @@ public class PokeHunter : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "GameplayTasks", "NavigationSystem", "UMG" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "GameplayTasks", "NavigationSystem", "UMG", "GameLiftServerSDK", "SlateCore", "Http", "Json", "JsonUtilities", "WebBrowserWidget" });
 
         //PrivateDependencyModuleNames.AddRange(new string[] {  });
 

@@ -18,7 +18,10 @@ public:
 	APartnerController();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
-		class AHunter* Hunter;
+	class AHunter* Hunter;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GameInstance")
+	class UDefaultGameInstance* gameInstance;
 
 	virtual void OnPossess(APawn* Pawn) override;
 

@@ -16,19 +16,20 @@ class POKEHUNTER_API UPartnerAnimInstance : public UAnimInstance
 
 public:
 	UPartnerAnimInstance();
-
+	
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	virtual void NativeInitializeAnimation() override;
 
 	UFUNCTION(BlueprintCallable, Category = AnimationProperties)
-		void UpdateAnimationProperties();
+	void UpdateAnimationProperties();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, category = Movement)
-		float MovementSpeed;
+	float MovementSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, category = Movement)
-		float Direction;
+	float Direction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, category = Movement)
-		class APartner* Partner;
+	class APartner* Partner;
 	
 };

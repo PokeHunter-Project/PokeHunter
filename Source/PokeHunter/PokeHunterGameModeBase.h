@@ -2,6 +2,9 @@
 
 #pragma once
 
+// #include "aws/gamelift/internal/network/AuxProxyMessageSender.h"
+// #include "aws/gamelift/server/GameLiftServerAPI.h"
+#include "GameLiftServerSDK.h"
 #include "PokeHunter.h"
 #include "GameFramework/GameModeBase.h"
 #include "Item/ItemDatabase.h"
@@ -10,16 +13,81 @@
 /**
  * 
  */
+
+USTRUCT()
+struct FStartGameSessionState
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+		bool Status;
+
+	FStartGameSessionState() {
+		Status = false;
+	}
+};
+
+USTRUCT()
+struct FUpdateGameSessionState
+{
+	GENERATED_BODY()
+
+	FUpdateGameSessionState() {
+
+	}
+};
+
+
+USTRUCT()
+struct FProcessTerminateState
+{
+	GENERATED_BODY()
+
+		UPROPERTY()
+		bool Status;
+
+	long TerminationTime;
+
+	FProcessTerminateState() {
+		Status = false;
+	}
+};
+
+USTRUCT()
+struct FHealthCheckState
+{
+	GENERATED_BODY()
+		bool Status;
+
+	FHealthCheckState() {
+		Status = false;
+	}
+};
+
 UCLASS()
 class POKEHUNTER_API APokeHunterGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 
-	APokeHunterGameModeBase();
-
 public:
+	APokeHunterGameModeBase();
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 
+protected:
+	virtual void BeginPlay() override;
+	
+private:
+	UPROPERTY()
+		FStartGameSessionState StartGameSessionState;
+
+	UPROPERTY()
+		FUpdateGameSessionState UpdateGameSessionState;
+
+	UPROPERTY()
+		FProcessTerminateState ProcessTerminateState;
+
+	UPROPERTY()
+		FHealthCheckState HealthCheckState;
 	//Item Database
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Database")
 	class UItemDatabase* ItemDatabase;

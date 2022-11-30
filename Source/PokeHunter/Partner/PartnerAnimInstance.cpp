@@ -9,8 +9,22 @@ UPartnerAnimInstance::UPartnerAnimInstance()
 	MovementSpeed = 0.0f;
 }
 
+void UPartnerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+{
+	::UAnimInstance::NativeUpdateAnimation(DeltaSeconds);
+
+	auto Pawn = TryGetPawnOwner();
+	if (::IsValid(Pawn))
+	{
+		// Partner = Cast<APartner>(TryGetPawnOwner());
+		MovementSpeed = Pawn->GetVelocity().Size();
+	}
+}
+
 void UPartnerAnimInstance::NativeInitializeAnimation()
 {
+	::UAnimInstance::NativeInitializeAnimation();
+
 	if (Partner == nullptr)
 	{
 		Partner = Cast<APartner>(TryGetPawnOwner());
@@ -19,14 +33,13 @@ void UPartnerAnimInstance::NativeInitializeAnimation()
 
 void UPartnerAnimInstance::UpdateAnimationProperties()
 {
-	if (Partner == nullptr)
-	{
-		Partner = Cast<APartner>(TryGetPawnOwner());
-	}
 	if (Partner != nullptr)
 	{
 		FVector Speed = Partner->GetVelocity();
-		FVector LateralSpeed = FVector(Speed.X, Speed.Y, 0.f);
-		MovementSpeed = LateralSpeed.Size();
+		FVector XYspeed = FVector(Speed.X, Speed.Y, 0.f);
+		MovementSpeed = XYspeed.Size();
+
+		UInputComponent* Input = Partner->InputComponent;
+		Direction = CalculateDirection(Speed, Partner->GetActorRotation());
 	}
 }

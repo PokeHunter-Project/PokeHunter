@@ -2,8 +2,8 @@
 
 
 #include "NpcPartnerManager.h"
-#include "../Partner/Partner.h"
-#include "../Partner/PartnerController.h"
+#include "PokeHunter/Partner/Partner.h"
+#include "PokeHunter/Partner/PartnerController.h"
 
 ANpcPartnerManager::ANpcPartnerManager()
 {
@@ -69,7 +69,7 @@ void ANpcPartnerManager::AddIndex(int Val)
 	if (Val < 0 && CurrentIndex == 0) return;
 	else if (Val > 0 && CurrentIndex == PartnerArray.Num()-1) return;
 
-	PartnerArray[CurrentIndex]->TargetPos = PositionArray[CurrentIndex];
+	PartnerArray[CurrentIndex]->TargetPos = PositionArray[CurrentIndex]; 
 	PartnerArray[CurrentIndex]->bPosing = false;
 	CurrentIndex += Val;
 }
@@ -78,6 +78,10 @@ void ANpcPartnerManager::SelectPartner()
 {
 	PartnerArray[CurrentIndex]->Hunter = Master;
 	Master->Partner = PartnerArray[CurrentIndex];
+
+	// g_gameInstance.SetMyPartner(Master->Partner);
+	// gameInstance->My_Partner = Master->Partner;
+
 	PartnerArray[CurrentIndex]->bPosing = false;
 	PartnerArray[CurrentIndex] = NULL;
 }

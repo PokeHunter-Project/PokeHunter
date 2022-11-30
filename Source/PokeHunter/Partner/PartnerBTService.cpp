@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "PartnerBTService.h"
 #include "PartnerController.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -15,4 +14,7 @@ void UPartnerBTService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	OwnerComp.GetBlackboardComponent()->SetValueAsObject(FName("Hunter"),Partner->Hunter);
 	OwnerComp.GetBlackboardComponent()->SetValueAsVector(FName("TargetPos"), Partner->TargetPos);
 	OwnerComp.GetBlackboardComponent()->SetValueAsBool(FName("bPosing"), Partner->bPosing);
+
+	//UDefaultGameInstance gameInstance;
+	//gameInstance.My_Partner = Partner;
 }
